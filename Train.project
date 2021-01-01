@@ -93,6 +93,7 @@
     </Configuration>
   </Settings>
   <VirtualDirectory Name="src">
+    <File Name="AVSTrain.h"/>
     <File Name="RTrain.cpp"/>
     <File Name="AVTrain.cpp"/>
     <File Name="AVSTrain.cpp"/>

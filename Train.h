@@ -10,12 +10,12 @@
 class Train{
 	
 public:
-	//Costruttore della classe Train
+	/*//Costruttore della classe Train
 	//Ogni oggetto della classe ha le stesse variabili
 	//Definite in base al tipo di treno
 	Train();										//costruttore di default
 	
-	Train(int type_, int from_);					//costruttore
+	Train(int type_, int from_);					//costruttore*/
 	
 	//calcola la posizione del treno
 	void virtual update_pos(int time_) = 0;
@@ -34,9 +34,9 @@ public:
 	void virtual arrived (Train &T) = 0;
 	
 
-private:
+protected:
 	//distanza massima tra due treni
-	const int DIST_MAX; 					//DA CALCOLARE, NON LA RICORDO
+	const int DIST_MAX = 10; 					//DA CALCOLARE, NON LA RICORDO
 	//velocità massima del tipo di treno
 	int vMax;
 	//velocità di crociera
