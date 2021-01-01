@@ -17,15 +17,34 @@ public:
 	
 	Train(int type_, int from_);					//costruttore
 	
-	//funzione che calcola la posizione del treno
+	//calcola la posizione del treno
 	void virtual update_pos(int time_) = 0;
+	
+	//mette in ordine i treni in marcia attualmente non fermi
+	void onRails (std::vector<Train> v);
+	
+	//controlla la distanza tra due treni
+	//e se la distanza è < DIST_MAX, rallenta quello accodato
+	void distance(Train T1, Train T2);
+	
+	//tiene una lista dei treni in moto 
+	void running (Train T) {running_.push_back(Train); T.status = 0};
+	
+	//elimina i treni dopo che sono arrivati al capolinea
+	void arrived (Train T);
 	
 
 private:
+	//distanza massima tra due treni
+	const int DIST_MAX; 					//DA CALCOLARE, NON LA RICORDO
 	//velocità massima del tipo di treno
 	const int VMAX;
 	//velocità di crociera
 	int vCrociera;
+	//treni in marcia
+	std::vector<Train> running_;
+	//treni non fermi
+	std::vector<Train> onRails_;
 	//tipo di treno: 1 == R, 2 == AV, 3 == AVS
 	int train_type;
 	//stazione di partenza: 0 == la prima, 1 == l'ultima
