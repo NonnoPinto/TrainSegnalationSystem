@@ -21,24 +21,24 @@ public:
 	void virtual update_pos(int time_) = 0;
 	
 	//mette in ordine i treni in marcia attualmente non fermi
-	void onRails (std::vector<Train> v);
+	void virtual onRails (std::vector<Train> v) = 0;
 	
 	//controlla la distanza tra due treni
 	//e se la distanza è < DIST_MAX, rallenta quello accodato
-	void distance(Train T1, Train T2);
+	void virtual distance(Train &T1, Train &T2) = 0;
 	
 	//tiene una lista dei treni in moto 
-	void running (Train T) {running_.push_back(Train); T.status = 0};
+	void virtual running (Train &T) = 0;
 	
 	//elimina i treni dopo che sono arrivati al capolinea
-	void arrived (Train T);
+	void virtual arrived (Train &T) = 0;
 	
 
 private:
 	//distanza massima tra due treni
 	const int DIST_MAX; 					//DA CALCOLARE, NON LA RICORDO
 	//velocità massima del tipo di treno
-	const int VMAX;
+	int vMax;
 	//velocità di crociera
 	int vCrociera;
 	//treni in marcia
