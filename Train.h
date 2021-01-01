@@ -10,12 +10,12 @@
 class Train{
 	
 public:
-	/*//Costruttore della classe Train
+	//Costruttore della classe Train
 	//Ogni oggetto della classe ha le stesse variabili
 	//Definite in base al tipo di treno
 	Train();										//costruttore di default
 	
-	Train(int type_, int from_);					//costruttore*/
+	Train(int type_, int from_);					//costruttore
 	
 	//calcola la posizione del treno
 	void virtual update_pos(int time_) = 0;
@@ -38,7 +38,7 @@ protected:
 	//distanza massima tra due treni
 	const int DIST_MAX = 10; 					//DA CALCOLARE, NON LA RICORDO
 	//velocità massima del tipo di treno
-	int vMax;
+	const int vMax;
 	//velocità di crociera
 	int vCrociera;
 	//treni in marcia
@@ -46,7 +46,7 @@ protected:
 	//treni non fermi
 	std::vector<Train> onRails_;
 	//tipo di treno: 1 == R, 2 == AV, 3 == AVS
-	int train_type;
+	const int train_type;
 	//stazione di partenza: 0 == la prima, 1 == l'ultima
 	int from;
 	//vettore con gli orari di arrivo previsti in ogni stazione
@@ -55,8 +55,8 @@ protected:
 	//ritardo accumulato
 	int delay;
 	//varibiale di controllo sullo stato del treno
-	//0 == in marcia, 1 == alla stazione di partenza
-	//2 == al parcheggio, 3 == in una fermata
+	//0 == alla stazione di partenza, 1 == in marcia
+	//2 == al parcheggio, 3 == in una fermata, 4 == arrivato a destinazione
 	int status;
 	//posizione attuale del treno lungo la linea ferroviaria
 	double pos;
