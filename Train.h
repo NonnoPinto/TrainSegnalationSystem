@@ -4,6 +4,7 @@
  * e che tengono una lista ordinata dei treni in movimento*/
 
 #include <iostream>
+#include <algorithm>
 #include <vector> 
  
 
@@ -20,29 +21,42 @@ public:
 	//tipo del treno
 	//stazione di partenza (in km) - 0 se la prima, altriemnti la lunghezza della linea
 	//gli orari di arrivo previsti per ogni stazione
-	Train(int type_, int from_, std::vector<int> &timeTable):	//costruttore - inizializza
-		train_type(type_), vCrociera(0), pos(from_), from(from_), 	//tutte le varibiali membro
+	Train(int type_, int from_, std::vector<int> &timeTable):		//costruttore - inizializza
+		train_type(type_), vCrociera(0), pos(from_), 				//tutte le varibiali membro
 		status(0), delay(0), time(timeTable){					  	//che non dipendono dal tipo
 		
-			//velocità massima
-			switch(type_){
-				case 1: vMax = 160; break;
-				case 2: vMax = 240; break;
-				case 3: vMax = 300; break;
-				default: throw std::invalid_argument("Invalid train type");
-			}
+		//stazione di partenza
+		if(from_ == 0)
+			from = 0;
+		else
+			from = 1;
+		
+		//velocità massima
+		switch(type_){									//inizializza la velocità
+			case 1: vMax = 160; break;					//massima, in base al tipo
+			case 2: vMax = 240; break;					//di treno
+			case 3: vMax = 300; break;
+			default: throw std::invalid_argument("Invalid train type");
+		}
 	};
 	
 	//calcola la posizione del treno
 	void virtual update_pos(int time_) = 0;
 	
-	//mette in ordine i treni in marcia attualmente non fermi
-	void virtual onRailsSort (std::vector<Train> v) = 0;
-	
 	//controlla la distanza tra due treni
 	//e se la distanza è < DIST_MAX, rallenta quello accodato
 	void virtual distance(Train &T1, Train &T2) = 0;
 	
+	//helper function per il sort
+	static bool myDist (Train &T1, Train &T2) {return (T1.pos < T2.pos);};
+	
+	//merge sort
+	//mette in ordine i treni in marcia attualmente non fermi
+	void onRailsSort (std::vector<Train>& v){
+		std::sort (v.begin(), v.end(), myDist);
+	};
+	
+	//overload ==
 	bool operator==(Train& T){
 		if(	train_type == T.train_type &&
 			vCrociera == T.train_type &&
@@ -69,6 +83,8 @@ public:
 		do i++;
 		while(running_[i] == T);
 		running_.erase(running_.begin()+i);};
+		
+	void update_speed (int v) {vCrociera = v;};
 
 protected:
 	//distanza massima tra due treni
