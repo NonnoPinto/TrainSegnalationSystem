@@ -43,9 +43,9 @@ public:
 	//calcola la posizione del treno
 	void update_pos(int time_) {pos += vCrociera/60;};
 	
-	//controlla la distanza tra due treni
+	//controlla la distanza tra due treni (T2 è più avanti di T1)
 	//e se la distanza è < DIST_MAX, rallenta quello accodato
-	double distance(Train &T1, Train &T2) {return T2.pos - T1.pos;};
+	void distance(Train &T1, Train &T2) {if(T2.pos - T1.pos) T1.vCrociera = T2.vCrociera;};
 	
 	//helper function per il sort
 	static bool myDist (Train &T1, Train &T2) {return (T1.pos < T2.pos);};
