@@ -93,6 +93,9 @@
     </Configuration>
   </Settings>
   <VirtualDirectory Name="src">
+    <File Name="RTrain.h"/>
+    <File Name="AVTrain.h"/>
+    <File Name="AVSTrain.h"/>
     <File Name="Train.h"/>
   </VirtualDirectory>
 </CodeLite_Project>
