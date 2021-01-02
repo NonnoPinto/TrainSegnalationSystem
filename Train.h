@@ -41,11 +41,11 @@ public:
 	};
 	
 	//calcola la posizione del treno
-	void virtual update_pos(int time_) = 0;
+	void update_pos(int time_) {pos += vCrociera/60;};
 	
 	//controlla la distanza tra due treni
 	//e se la distanza è < DIST_MAX, rallenta quello accodato
-	void virtual distance(Train &T1, Train &T2) = 0;
+	double distance(Train &T1, Train &T2) {return T2.pos - T1.pos;};
 	
 	//helper function per il sort
 	static bool myDist (Train &T1, Train &T2) {return (T1.pos < T2.pos);};
