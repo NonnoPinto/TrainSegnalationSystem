@@ -23,7 +23,7 @@ public:
 	//gli orari di arrivo previsti per ogni stazione
 	Train(	int n, int type_, int v,							//costruttore - inizializza
 			int from_, std::vector<int> &timeTable):			//tutte le varibiali membro
-				nTrain(n), train_type(type_), vMax(v), from(from_),
+				nTrain(n), train_type(type_), vMax{from==0 ? vMax=v : vMax=-v}, from(from_),
 				status(0), time(timeTable), vCrociera(0), delay(0), pos(0){
 	//DA RISOLVERE LA QUESTIONE DELLA POSIZIONE DI CHI PARTE DALLA FINE
 	if (from == 1){
@@ -42,7 +42,9 @@ public:
 	//e se la distanza è < DIST_MAX, rallenta quello accodato
 	virtual void distance(Train &T1, const Train &T2) = 0;
 	
-	virtual void update_speed (int v) = 0;
+	virtual void update_speed (const int v) = 0;
+	
+	virtual void set_status (const int s) = 0;
 	
 	
 	//***funzioni membro di Train***
@@ -58,6 +60,8 @@ public:
 		do i++;
 		while(running_[i] == T);
 		running_.erase(running_.begin()+i);};
+		
+	bool const runningIsFree(){return running_.size() == 0;};
 	
 	//***helper functions***
 	//my_sort
@@ -97,15 +101,14 @@ public:
 	//tipo di treno: 1 == R, 2 == AV, 3 == AVS
 	const int train_type;
 	
+	//velocità massima del tipo di treno
+	int vMax;
+	
 	//stazione di partenza: 0 == la prima, 1 == l'ultima
 	const int from;
 	
 protected:
 	//sono definite come protected tutte le varibili necessarie alle classi derivate
-	
-	//velocità massima del tipo di treno
-	int vMax;
-	
 	//distanza massima tra due treni
 	int dist_max;
 	
