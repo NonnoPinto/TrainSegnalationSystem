@@ -28,11 +28,13 @@ public:
 	//funzione di riconoscimento del treno
 	const int train_number(const Train &T) const {return T.nTrain;};
 	
-	void set_status (const int s) {status = s;};
+	void get_status (const int s) {status = s;};
+	
+	const int set_status() const {return status;};
 	
 	virtual void set_speed (const int v) = 0;
 	
-	virtual void update_pos(const int time_) = 0;
+	void update_pos(const int time_);
 	
 	virtual const int get_km() const = 0;
 	

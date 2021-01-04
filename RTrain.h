@@ -3,23 +3,24 @@
 
 #pragma once
 #include "Train.h"
+template <typename L>
 
-class RTrain : public Train{
+class RTrain : public Train<L>{
 
 public:
 	//Costruttore di default
-	RTrain() : Train(), vMax(0), dist_max(0), from(0){};
+	RTrain() : Train<L>(), vMax(0), dist_max(0), from(0){};
 	
 	//costruttore di RTrain, chiama il costruttore della classe base Train
 	//SISTEMARE LE VARIABILI
-	RTrain(int n, int from_, std::vector<int> &timeTable): Train(n),
+	RTrain(int n, int from_, std::vector<int> &timeTable): Train<L>(n),
 		from(from_), time(timeTable),
 		vMax(160*(from_*(-1))),//se il treno parte dall'ultima stazione
 												//la velocità si considera negativa
-		dist_max(10+(160/60))	//la distanza massima è la somma dei 10 km di sicurezza
-								//più i chilometri che un regionale
-								//(alla sua velocità massima)
-								//può percorrere in un minuto (unità di tempo minima)
+		dist_max((160/60))	//la distanza massima è la correzione da fare ai valori di default:
+							//i chilometri che un regionale
+							//(alla sua velocità massima)
+							//può percorrere in un minuto (unità di tempo minima)
 	{if(from_==1) pos = 200;}; //DA RISOLVERE, CAZZO
 	
 	//aggiornamento della velocità (frenata, accelerata, stop...)
@@ -28,7 +29,7 @@ public:
 	const int get_km() const override {return pos;};
 	
 	//calcola la posizione del treno
-	void update_pos(const int time_) override;
+	void update_pos(Train<L> &T, const int time_) override;
 	
 	//calcola il ritardo
 	int myDelay(const int clock_) override;
