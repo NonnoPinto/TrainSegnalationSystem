@@ -25,8 +25,7 @@ public:
 	//aggiornamento della velocità (frenata, accelerata, stop...)
 	void set_speed (const int v) override {vCrociera=v;};
 	
-	//aggiorna lo stato del treno
-	void set_status (const int s) override {status = s;};
+	const int get_km() const override {return pos;};
 	
 	//calcola la posizione del treno
 	void update_pos(const int time_) override;
@@ -34,7 +33,6 @@ public:
 	//calcola il ritardo
 	int myDelay(const int clock_) override;
 	
-protected:
 	//tipo di treno
 	const int train_type = 1;
 	
@@ -47,17 +45,13 @@ protected:
 	//variabile di controllo dell'orgine del treno
 	const int from;
 	
+protected:
 	//velocità di crociera
 	int vCrociera = 0;
 	
 	//vettore con gli orari di arrivo previsti in ogni stazione
 	//l'orario è espresso in minuti dopo la partenza
 	const std::vector<int> time;
-	
-	//varibiale di controllo sullo stato del treno
-	//0 == alla stazione di partenza, 1 == in marcia,
-	//2 == fermo (parcheggio o fermata), 3 == arrivato a destinazione
-	int status = 0;
 	
 	//posizione attuale del treno lungo la linea ferroviaria
 	double pos = 0;
