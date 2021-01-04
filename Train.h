@@ -16,17 +16,17 @@ public:
 		{throw std::invalid_argument("Input needed!");};
 
 	//Il costruttore ha come unico argomento il numero del treno
-	Train(int n): nTrain(n){};
+	Train<L>(int n): nTrain(n){};
 	
 	//disabilito costruttore di copia e l'assegnamento di copia
-	Train(const Train&) = delete;
-	Train& operator=(const Train&) = delete;
+	Train<L>(const Train<L>&) = delete;
+	Train<L>& operator=(const Train<L>&) = delete;
 	
 	//overload ==
-	bool operator==(Train& T) {return nTrain == T.nTrain;};
+	bool operator==(Train<L> &T) {return nTrain == T.nTrain;};
 	
 	//funzione di riconoscimento del treno
-	const int train_number(const Train &T) const {return T.nTrain;};
+	const int train_number(const Train<L> &T) const {return T.nTrain;};
 	
 	void get_status (const int s) {status = s;};
 	
@@ -47,10 +47,10 @@ public:
 	virtual void distance(L &T1, const L &T2) = 0;
 	
 	//tiene una lista dei treni in moto 
-	virtual void running (std::vector<Train>& v) = 0;
+	virtual void running (std::vector<Train<L>>& v) = 0;
 	
 	//elimina i treni dopo che sono arrivati al capolinea
-	virtual void arrived (Train &T) = 0;
+	virtual void arrived (Train<L> &T) = 0;
 	
 	virtual bool runningIsFree() = 0;
 	
@@ -59,7 +59,7 @@ public:
 	virtual bool myDist (L &T1, L &T2) = 0;
 	
 	//mette in ordine i treni non fermi in base alla loro posizione lungo la ferrovia
-	virtual void onRailsSort (std::vector<Train>& v) = 0;
+	virtual void onRailsSort (std::vector<Train<L>>& v) = 0;
 	
 protected:
 	//numero del treno
