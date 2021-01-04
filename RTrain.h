@@ -12,7 +12,6 @@ public:
 	RTrain() : Train<L>(), vMax(0), dist_max(0), from(0){};
 	
 	//costruttore di RTrain, chiama il costruttore della classe base Train
-	//SISTEMARE LE VARIABILI
 	RTrain(int n, int from_, std::vector<int> &timeTable): Train<L>(n),
 		from(from_), time(timeTable),
 		vMax(160*(from_*(-1))),//se il treno parte dall'ultima stazione
@@ -23,13 +22,8 @@ public:
 							//può percorrere in un minuto (unità di tempo minima)
 	{if(from_==1) pos = 200;}; //DA RISOLVERE, CAZZO
 	
-	//aggiornamento della velocità (frenata, accelerata, stop...)
-	void set_speed (const int v) override {vCrociera=v;};
-	
-	const int get_km() const override {return pos;};
-	
 	//calcola la posizione del treno
-	void update_pos(Train<L> &T, const int time_) override;
+	const int update_pos(const int time_) override;
 	
 	//calcola il ritardo
 	int myDelay(const int clock_) override;
@@ -47,6 +41,9 @@ public:
 	const int from;
 	
 protected:
+	//aggiornamento della velocità (frenata, accelerata, stop...)
+	void set_speed (const int v) override {vCrociera=v;};
+	
 	//velocità di crociera
 	int vCrociera = 0;
 	

@@ -9,8 +9,12 @@ template <typename L>
 //controlla la distanza tra due treni (T2 è più avanti di T1)
 //e se la distanza è < DIST_MAX, rallenta quello accodato
 void Rails<L>::distance(L &T1, const L &T2){
-	if (abs(T1.pos - T2.pos)<T1.dist_max)
+	if (abs(T1.pos - T2.pos)<T1.dist_max){
 		T1.vCrociera = T2.vCrociera;
+		std::cout << "Train n. " << T1.nTrain << "has been slow down to "
+				<< T2.vCrociera << " kmph due to avoid a crash with train n. "
+				<< T2.nTrain << std::endl;
+	}
 }
 
 template <typename L>
@@ -39,12 +43,22 @@ void Rails<L>::onRailsSort (std::vector<Train<L>>& v){
 
 template <typename L>
 //elimina i treni dopo che sono arrivati al capolinea
-void Rails<L>::arrived (Train<L> &T){
-	int i = -1;
-	do i++;
-	while(running_[i] == T);
+void Rails<L>::arrived (){
+	int i = 0;
+	while(running_[i] != this)
+		i++;
 	running_.erase(running_.begin()+i);
+	std::cout << "Train n. " << this.nTrain << " has arrived to destination\n";
 }
 
 template <typename L>
-bool Rails<L>::runningIsFree() {return running_.size() == 0;}
+bool Rails<L>::runningIsFree() {
+	int tmp = 0;
+	for (int i = 0; i < trains_.size(); i++)
+		if (trains_[i].status == 3)
+			tmp++;
+	if (tmp == trains_)
+		std::cout << "All trains are arrived at their own destination!\n";
+		return true;
+	return false;
+}

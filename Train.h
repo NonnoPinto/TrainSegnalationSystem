@@ -23,34 +23,23 @@ public:
 	Train<L>& operator=(const Train<L>&) = delete;
 	
 	//overload ==
-	bool operator==(Train<L> &T) {return nTrain == T.nTrain;};
+	bool operator!=(Train<L> &T) {return nTrain != T.nTrain;};
 	
-	//funzione di riconoscimento del treno
-	const int train_number(const Train<L> &T) const {return T.nTrain;};
+	const int get_status() const {return status;};
 	
-	void get_status (const int s) {status = s;};
-	
-	const int set_status() const {return status;};
-	
-	virtual void set_speed (const int v) = 0;
-	
-	void update_pos(const int time_);
-	
-	virtual const int get_km() const = 0;
+	virtual const int update_pos(const int time_) = 0;
 	
 	virtual int myDelay (const int clock_) = 0;
 	
-	virtual void just_passed () = 0;
-	
 	//controlla la distanza tra due treni (T2 è più avanti di T1)
-	//e se la distanza è < DIST_MAX, rallenta quello accodato
+	//e se la distanza è < (km di sicurezza + dist_max), rallenta quello accodato
 	virtual void distance(L &T1, const L &T2) = 0;
 	
-	//tiene una lista dei treni in moto 
+	//tiene una lista dei treni non fermi
 	virtual void running (std::vector<Train<L>>& v) = 0;
 	
 	//elimina i treni dopo che sono arrivati al capolinea
-	virtual void arrived (Train<L> &T) = 0;
+	virtual void arrived () = 0;
 	
 	virtual bool runningIsFree() = 0;
 	
@@ -62,6 +51,10 @@ public:
 	virtual void onRailsSort (std::vector<Train<L>>& v) = 0;
 	
 protected:
+	void set_status (const int s) {status = s;};
+	
+	virtual void set_speed (const int v) = 0;
+	
 	//numero del treno
 	const int nTrain;
 	
