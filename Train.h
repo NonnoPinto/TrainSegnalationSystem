@@ -3,12 +3,16 @@
  * Oltre al costruttore, sono presenti funzioni che regolano la distanza tra due treni
  * e che tengono una lista ordinata dei treni in movimento*/
 
-#pragma once
-#include <iostream>
-#include <algorithm>
-#include <vector> 
+#ifndef Train_h
+#define Train_h
 
-template <typename L>  class Train{
+#include "TrainStation.h"
+
+#include <iostream>
+#include <algorithm> 
+#include <vector>
+
+class Train : public TrainStation {
 	
 public:
 	//Costruttore della classe Train
@@ -16,27 +20,27 @@ public:
 		{throw std::invalid_argument("Input needed!");};
 
 	//Il costruttore ha come unico argomento il numero del treno
-	Train<L>(int n): nTrain(n){};
+	Train(int n): nTrain(n){};
 	
 	//disabilito costruttore di copia e l'assegnamento di copia
-	Train<L>(const Train<L>&) = delete;
-	Train<L>& operator=(const Train<L>&) = delete;
+	//Train(const Train&) = delete;
+	Train& operator=(const Train&) = delete;
 	
-	//overload ==
-	bool operator!=(Train<L> &T) {return nTrain != T.nTrain;};
+	//overload !=
+	bool operator!=(Train &T) {return nTrain != T.nTrain;};
 	
-	const int get_status() const {return status;};
+	//int get_status() const {return status;};
 	
-	virtual const int update_pos(const int time_) = 0;
+	double update_pos() override;
 	
-	virtual int myDelay (const int clock_) = 0;
+	int myDelay (const int clock_) override;
 	
-	//controlla la distanza tra due treni (T2 è più avanti di T1)
+	/*//controlla la distanza tra due treni (T2 è più avanti di T1)
 	//e se la distanza è < (km di sicurezza + dist_max), rallenta quello accodato
-	virtual void distance(L &T1, const L &T2) = 0;
+	virtual void distance(Train &T1, const Train &T2) = 0;
 	
 	//tiene una lista dei treni non fermi
-	virtual void running (std::vector<Train<L>>& v) = 0;
+	virtual void running (std::vector<Train>& v) = 0;
 	
 	//elimina i treni dopo che sono arrivati al capolinea
 	virtual void arrived () = 0;
@@ -45,21 +49,43 @@ public:
 	
 	//STL sort
 	//my_sort
-	virtual bool myDist (L &T1, L &T2) = 0;
+	virtual bool myDist (Train &T1, Train &T2) = 0;
 	
 	//mette in ordine i treni non fermi in base alla loro posizione lungo la ferrovia
-	virtual void onRailsSort (std::vector<Train<L>>& v) = 0;
-	
-protected:
-	void set_status (const int s) {status = s;};
-	
-	virtual void set_speed (const int v) = 0;
+	virtual void onRailsSort (std::vector<Train>& v) = 0;*/
 	
 	//numero del treno
 	const int nTrain;
+	
+	void set_speed (const int v) override {vCrociera = v;};
+	
+	void set_status (const int s) {status = s;};
+	
+	
+//protected:
+	void set_timeTable(std::vector<int>& t) {time = t;};
+	
+	//velocità di crociera
+	int vCrociera = 0;
+	
+	//posizione attuale del treno lungo la linea ferroviaria
+	double pos = 0;
+	
+	//ritardo accumulato
+	int delay = 0;
+	
+	//stazioni raggiunte
+	int station_ = 0;
 	
 	//varibiale di controllo sullo stato del treno
 	//0 == alla stazione di partenza, 1 == in marcia,
 	//2 == fermo (parcheggio o fermata), 3 == arrivato a destinazione
 	int status = 0;
+	
+	//vettore con gli orari di arrivo previsti in ogni stazione
+	//l'orario è espresso in minuti dopo la partenza
+	std::vector<int> time;
+	
 };
+
+#endif
