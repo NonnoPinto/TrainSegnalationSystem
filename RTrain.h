@@ -9,27 +9,28 @@
 class RTrain : public Train{
 
 public:
-	//Costruttore di default
-	RTrain() : Train(), vMax(0), dist_max(0), from(0){};
+//Costruttore di default
+RTrain();
 	
-	//costruttore di RTrain, chiama il costruttore della classe base Train
-	RTrain(int n, int from_, std::vector<int> &timeTable, std::vector<std::string> &line):
-		Train(n), from(from_),
-		vMax(160*(from_*(-1))),//se il treno parte dall'ultima stazione
-												//la velocità si considera negativa
-		dist_max(10 + (160/60))	//la distanza massima è la correzione da fare ai valori di default:
-							//i chilometri che un regionale
-							//(alla sua velocità massima)
-							//può percorrere in un minuto (unità di tempo minima)
-	{	set_timeTable(timeTable);
-		if(from_==1) pos = std::stoi(line[line.size()-1]);}; 
+//costruttore di RTrain, chiama il costruttore della classe base Train e implementa
+//l'inizializzazione della altre varibiali
+RTrain(int n, int from_, std::vector<int> &timeTable, std::vector<std::string> &line);
+
+	//override funzione che calcola il ritardo del treno ad ogni stazione raggiunta
+	//e tiene il conto delle stazioni (comprese quelle in cui non si ferma)
+	int myDelay (const int clock_) override;
 	
-	/*//calcola la posizione del treno
-	double update_pos(const int time_) override;
+	//override della funzione principale che, ad ogni ciclo,
+	//aggiorna la posizione del treno in base allo status e alla v di crociera
+	double update_pos() override;
+
+};
+#endif
+
 	
-	//calcola il ritardo
-	int myDelay(const int clock_) override;*/
-	
+	/*//variabili membro pubbliche
+	//facilmente accessibili da chiunque, ma conservano l'incapsulamento
+	//perchè definite const
 	//tipo di treno
 	const int train_type = 1;
 	
@@ -40,10 +41,15 @@ public:
 	const int dist_max;
 	
 	//variabile di controllo dell'orgine del treno
-	const int from;
+	const int from;*/
+
+	/*//calcola la posizione del treno
+	double update_pos(const int time_) override;
 	
-protected:
-	/*//aggiornamento della velocità (frenata, accelerata, stop...)
+	//calcola il ritardo
+	int myDelay(const int clock_) override;*/
+	
+		/*//aggiornamento della velocità (frenata, accelerata, stop...)
 	void set_speed (const int v) override {vCrociera=v;};
 	
 	//velocità di crociera
@@ -61,7 +67,3 @@ protected:
 	//vettore con gli orari di arrivo previsti in ogni stazione
 	//l'orario è espresso in minuti dopo la partenza
 	//const std::vector<int> time;
-	
-};
-
-#endif

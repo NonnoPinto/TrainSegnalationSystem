@@ -3,6 +3,9 @@
 * Contiene le variabili ereditate dalle classi derivate (?)
 */
 
+#ifndef TrainStation_h
+#define TrainStation_h
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -11,11 +14,46 @@
 class TrainStation {
 
 public:
+	
+	TrainStation(){std::cout<<"Come sono bello!\n\n";};
+	
+	int update_clock() {return ++clock;};
+
 	virtual double update_pos() = 0;
 	
 	virtual int myDelay (const int clock_) = 0;
 	
 	virtual void set_timeTable(std::vector<int> &t) = 0;
+	
+	virtual void set_train_type(int x) = 0;
+	
+	virtual void set_vMax(int x) = 0;
+	
+	virtual void set_dist_max(int x) = 0;
+	
+	virtual void set_from(int x) = 0;
+
+protected:
+	virtual void set_speed (const int v) = 0;
+	
+	//vettore per raccogliere i dati della timetable
+	std::vector<std::vector<int>> vec;
+	
+	//vettore per raccogliere i dati della line description
+	std::vector<std::vector<std::string>> vec2;
+
+	//orologio di sistema, viene aggiornato ad ogni passo che modifica lo stato del programma
+	int clock = 0;
+	
+	/*virtual bool isParkAreaEmpty() = 0;
+	
+	virtual bool isRailFree(int p) = 0;
+	
+	virtual bool isFull() = 0;
+	
+	virtual void startTrain(int p) = 0;
+	
+	virtual bool runningIsFree() = 0;*/
 	
 	/* Funzione che legge i dati dalla timetable
 	I dati vengono salvati in un vettore strutturato come una matrice che verrà poi restituito
@@ -67,18 +105,6 @@ public:
 	
 	std::vector<std::vector<std::string>> get_lineDescription() {return vec2;};*/
 	
-protected:
-	virtual void set_speed (const int v) = 0;
-	
-	//vettore per raccogliere i dati della timetable
-	std::vector<std::vector<int>> vec;
-	
-	//vettore per raccogliere i dati della line description
-	std::vector<std::vector<std::string>> vec2;
-
-	//orologio di sistema, viene aggiornato ad ogni passo che modifica lo stato del programma
-	int clock = 0;
-
 	//variabile che tiene conto dello stato di un treno(true = in transito, false = fermo)
 	//bool status;
 
@@ -109,6 +135,8 @@ protected:
 	*/
 
 };
+
+#endif
 
 /*
 class Train : public TrainStation {

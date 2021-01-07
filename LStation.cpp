@@ -1,8 +1,8 @@
 #include "LStation.h"
-
-//Restituisce il numero del binario su cui passare in base al segnale (transito o fermata), verso del treno (dato dalla velocit‡)
+/*
+//Restituisce il numero del binario su cui passare in base al segnale (transito o fermata), verso del treno (dato dalla velocit√†)
 //e condizione dei binari (se sono liberi o meno)
-int LStation::signalResponse(bool stopping, int v, Train& t)
+int LStation::signalResponse(bool stopping, int v, Train<L>& t)
 {
 	std::cout << "Signal received from station " << name << " by the train n " << t.getntrain() << std::endl;
 	if (!stopping)
@@ -59,7 +59,7 @@ int LStation::signalResponse(bool stopping, int v, Train& t)
 	}
 }
 
-void LStation::parkTrain(int p, Train& t)
+void LStation::parkTrain(int p, Train<L>& t)
 {
 	if (p < 0 || p>6)
 		throw std::invalid_argument("Position out of bounds");
@@ -77,7 +77,7 @@ void LStation::parkTrain(int p, Train& t)
 	}
 }
 
-void LStation::approaching(Traint& t)
+void LStation::approaching(Traint<L>& t)
 {
 	if (t.train_type == 1)
 	{
@@ -111,14 +111,14 @@ void LStation::startTrain(int p)
 		parking_area.pop();
 	}
 }
-
-bool LStation::isRailFree(int p)				//Comunica se un certo binario Ë libero o meno
+//Comunica se un certo binario √® libero o meno
+bool LStation::isRailFree(int p)			
 {
 	if (p<0 || p>nrails)
 		throw std::invalid_argument("Position out of bounds");
 
 	if (p == 2 || p == 5)
-		std::cout << "Ë un binario di transito \n";
+		std::cout << "√® un binario di transito \n";
 
 	return (rails[p] == nullptr);
-}
+}*/

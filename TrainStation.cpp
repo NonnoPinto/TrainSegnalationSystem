@@ -1,4 +1,4 @@
-/*#include <math.h>
+#include <math.h>
 #include <fstream>
 #include <sstream>
 
@@ -8,7 +8,7 @@ using namespace std;
 
 #include "TrainStation.h"
 
-
+/*
 void TrainStation::read_timetable() {
 
 	std::ifstream file_in("TimeTable.txt");

@@ -1,22 +1,27 @@
-#pragma once
+/* author: Andrei Ovidiu Danciu - 1224263
+ * File cpp della classe derivata "Station"*/
+
+#ifndef PSTATION_H
+#define PSTATION_H
 
 #include "Station.h"
 
 class PStation : public Station
 {
 public:
-	PStation(std::string n, double d) : Station(n, d) {};
+	PStation(std::string n, int d) : Station(n, d){
+		set_ntrains(0);
+		set_nrails(4);
+		set_station_type(0);
+	}
 	
-	bool isParkAreaEmpty() override { return (parking_area.front() == nullptr); }
-	bool isRailFree(int p) override;
+	bool isParkAreaEmpty()  { return (parking_area.size() == 0); }
+	bool isRailFree(int p) ;
 
-	int signalResponse(bool stopping, int v, Train& t) override;
-	void parkTrain(int p, Train& t) override;
-	void approaching(Traint& t) override;
-	void startTrain(int p) override;
-
-	const int station_type = 0;			//Che tipo di stazione è: 0 == Principale, 1 == Locale
-
-private:			
-	const int nrails = 4;		//Numero di binari che possiede la stazione (4 per principali, 6 per locali)
+	int signalResponse(bool stopping, int v, Train& t) ;
+	void parkTrain(int p, Train& t) ;
+	void approaching(Train& t) ;
+	void startTrain(int p) ;
 };
+
+#endif // PSTATION_H
