@@ -10,31 +10,34 @@
 #include "AVSTrain.h"
 
 class Rails : public RTrain, public AVTrain, public AVSTrain{
+
 public:
 	Rails() {throw std::invalid_argument ("I need trains!");};
 	
-	Rails(std::vector<int> v){trains_=v;};
+	Rails(std::vector<Train> v){all_trains_=v;};
 	
 	//controlla la distanza tra due treni (T2 è più avanti di T1)
 	//e se la distanza è < DIST_MAX, rallenta quello accodato
-	void distance(Train &T1, const Train &T2) override;
+	void distance(Train &T1, const Train &T2);
 	
 	//tiene una lista dei treni in moto 
-	void running (std::vector<Train>& v) override;
+	void running (std::vector<Train>& v);
 	
 	//elimina i treni dopo che sono arrivati al capolinea
-	void arrived () override;
+	void arrived (Train &T);
 	
-	bool runningIsFree() override;
+	bool runningIsFree();
 	
 	//STL sort
 	//my_sort
-	bool myDist (Train &T1, Train &T2) override;
+	//bool myDist (Train &T1, Train &T2);
 	
 	//mette in ordine i treni non fermi in base alla loro posizione lungo la ferrovia
-	void onRailsSort (std::vector<Train>& v) override;
+	void onRailsSort ();
 	
 	void dont_crash();
+	
+	void start(Train& T) {running_.push_back(T);};
 	
 private:
 	//sono definiti private due vettori della sola classe Train
@@ -45,7 +48,11 @@ private:
 	std::vector<Train> running_;
 	
 	//tutti i treni
-	std::vector<int> trains_;
+	std::vector<Train> all_trains_;
+	
+	//treni arrivani
+	int arrived_ = 0;
+
 };
 
 #endif

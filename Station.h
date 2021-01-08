@@ -21,16 +21,16 @@ public:
 	Station& operator=(const Station&) = delete;
 
 	//Controlla se i binari standard sono tutti occupati
-	bool isFull() { return (ntrains == 4); }
+	bool isFull() override  { return (ntrains == 4); }
 
 	//Controlla se il parcheggio è vuoto
-	bool isParkAreaEmpty()  { return (parking_area.size() == 0); }
+	bool isParkAreaEmpty() override { return (parking_area.size() == 0); }
 
 	//Controlla se un dato binario è libero
-	bool isRailFree(int p) ;
+	bool isRailFree(int p) override;
 
 	//Risponde al segnale ritornando il binario su cui il treno deve andare
-	int signalResponse(bool stopping, int v, Train& t);
+	int signalResponse(bool stopping, Train& t);
 
 	//Ferma il treno su un dato binario
 	void parkTrain(int p, Train& t);
@@ -39,10 +39,12 @@ public:
 	void approaching(Train& t);
 
 	//Fa partire il treno di un dato binario
-	void startTrain(int p) ;
+	void startTrain(Train& t);
 	//void leaving();
 
 	int getdistance() const { return distance; }
+
+	const int distance;
 	
 protected:
 	
@@ -54,11 +56,13 @@ protected:
 	//Struttura per gestire i binari
 	std::vector<Train> rails;
 
+	void set_rails(int n) { rails.resize(n); }
+
 	//Struttura per gestire il parcheggio
 	std::queue<Train> parking_area;
 	
 	//Distanza (km) della stazione dall'origine
-	const int distance;
+	
 	
 	//Nome della stazione
 	const std::string name;

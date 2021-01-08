@@ -1,8 +1,8 @@
 #include "PStation.h"
 
-/*int PStation::signalResponse(bool stopping, int v, Train<L>& t)
+int PStation::signalResponse(bool stopping, Train& t)
 {
-	std::cout << "Confirmed train n" << t.ntrain << " is stopping at station " << name << " -> ";
+	std::cout << "Confirmed train n" << t.nTrain << " is stopping at station " << name << " -> ";
 	if (isFull())
 	{
 		std::cout << "All rails are occupied -> Sent to parking area" << std::endl;
@@ -10,9 +10,9 @@
 	}
 	else
 	{
-		if (v > 0) //Origine -> Fine
+		if (t.get_from() == 0) //Origine -> Fine
 		{
-			if (isFree(0))
+			if (isRailFree(0))
 			{
 				std::cout << "Sent to Rail number 1" << std::endl;
 				return 1;
@@ -25,7 +25,7 @@
 		}
 		else //Fine -> Origine
 		{
-			if (isFree(3))
+			if (isRailFree(3))
 			{
 				std::cout << "Sent to Rail number 4" << std::endl;
 				return 4;
@@ -39,15 +39,15 @@
 	}
 }
 
-void PStation::parkTrain(int p, Train<L>& t)
+void PStation::parkTrain(int p, Train& t)
 {
 	if (p < 0 || p>4)
 		throw std::invalid_argument("Position out of bounds");
-	t.setpos(p);
+	t.set_rail(p);
 	if (p == 0)
 	{
 		parking_area.push(t);
-		std::cout << "Rails are all occupied, train n " << t.ntrain << " sent to the parking area in station " << name << std::endl;
+		std::cout << "Rails are all occupied, train n " << t.nTrain << " sent to the parking area in station " << name << std::endl;
 	}
 	else
 	{
@@ -57,31 +57,37 @@ void PStation::parkTrain(int p, Train<L>& t)
 	}
 }
 
-void PStation::approaching(Train<L>& t)
+void PStation::approaching(Train& t)
 {
-	std::cout << "Train n " << t.ntrain << " approaching (about 5km left) station " << name << ", maximum speed set to 80km/h. \n";
-	if (t.from == 0)
-		t.setspeed(80);
+	std::cout << "Train n " << t.nTrain << " approaching (about 5km left) station " << name << ", maximum speed set to 80km/h. \n";
+	if (t.get_from() == 0)
+		t.set_speed(80);
 	else
-		t.setspeed(-80);
+		t.set_speed(-80);
 }
 
-void PStation::startTrain(int p)
+void PStation::startTrain(Train& t)
 {
-	rails[p - 1].setspeed(80);
-	if (isParkAreaEmpty())
-		rails[p - 1] = nullptr;
+	if (t.get_from() == 0)
+		t.set_speed(80);
+	else
+		t.set_speed(-80);
+	t.set_status(1);
+	/*if (isParkAreaEmpty())
+		int i = 0;
+		//VEDI DOPO
+		//rails[p - 1] = nullptr;
 	else
 	{
 		rails[p - 1] = parking_area.front();
 		parking_area.pop();
-	}
+	}*/
 }
 //Comunica se un certo binario è libero o meno
 bool PStation::isRailFree(int p)
 {
 	if (p<0 || p>nrails)
 		throw std::invalid_argument("Position out of bounds");
-		
-	return (rails[p] == nullptr);
-}*/
+		//VEDI DOPO
+	return (false);
+}

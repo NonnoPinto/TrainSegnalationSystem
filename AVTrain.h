@@ -17,7 +17,7 @@ public:
 
 	//override funzione che calcola il ritardo del treno ad ogni stazione raggiunta
 	//e tiene il conto delle stazioni (comprese quelle in cui non si ferma)
-	int myDelay (const int clock_) override;
+	int myDelay (int clock_) override;
 	
 	//override della funzione principale che, ad ogni ciclo,
 	//aggiorna la posizione del treno in base allo status e alla v di crociera

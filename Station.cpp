@@ -4,9 +4,9 @@
 #include "Station.h"
 
 //Risponde al lancio di segnale con il binario su cui deve andare il treno
-int Station::signalResponse(bool stopping, int v, Train& t)
+int Station::signalResponse(bool stopping, Train& t)
 {
-	std::cout << "Confirmed train n" << t.nTrain << " is approaching station " << name << " -> ";
+	std::cout << "Confirmed train n " << t.nTrain << " is approaching station " << name << " -> ";
 	if (isFull())
 	{
 		std::cout << "All rails are occupied -> Sent to parking area" << std::endl;
@@ -14,7 +14,7 @@ int Station::signalResponse(bool stopping, int v, Train& t)
 	}
 	else
 	{
-		if (v > 0) //Origine -> Fine
+		if (t.get_from() == 0) //Origine -> Fine
 		{
 			if (isRailFree(0))
 			{
@@ -45,8 +45,8 @@ int Station::signalResponse(bool stopping, int v, Train& t)
 //Fa fermare il treno sul binario indicato (o nel parcheggio se pieno)
 void Station::parkTrain(int p, Train& t)
 {
-	if (p < 0 || p>4)
-		throw std::invalid_argument("Position out of bounds");
+	//if (p < 0 || p>4)
+		//throw std::invalid_argument("Position out of bounds");
 	t.set_rail(p);
 	if (p == 0)
 	{
@@ -72,18 +72,23 @@ void Station::approaching(Train& t)
 		t.set_speed(-80);
 }
 //Fa partire il treno
-void Station::startTrain(int p)
+void Station::startTrain(Train& t)
 {
-	rails[p - 1].set_speed(80);
-	rails[p - 1].update_pos();
-	if (isParkAreaEmpty())
+	std::cout << "Train n " << t.nTrain << " started from station " << name << std::endl;
+	if (t.get_from() == 0)
+		t.set_speed(80);
+	else
+		t.set_speed(-80);
+	t.set_status(4);
+
+	/*if (isParkAreaEmpty())
 		int i = 0;
 		//rails[p - 1] = Train(-1);
 	else
 	{
 		rails[p - 1] = parking_area.front();
 		parking_area.pop();
-	}
+	}*/
 }
 //Comunica se un certo binario è libero o meno
 bool Station::isRailFree(int p)

@@ -1,16 +1,15 @@
 #include "LStation.h"
-/*
 //Restituisce il numero del binario su cui passare in base al segnale (transito o fermata), verso del treno (dato dalla velocità)
 //e condizione dei binari (se sono liberi o meno)
-int LStation::signalResponse(bool stopping, int v, Train<L>& t)
+int LStation::signalResponse(bool stopping, Train& t)
 {
-	std::cout << "Signal received from station " << name << " by the train n " << t.getntrain() << std::endl;
+	std::cout << "Signal received from station " << name << " by the train n " << t.nTrain << std::endl;
 	if (!stopping)
 	{
-		std::cout << "Confirmed train n" << t.getntrain() << " is just passing through -> ";
-		if (v > 0)
+		std::cout << "Confirmed train n" << t.nTrain << " is just passing through -> ";
+		if (t.get_from() == 0)
 		{
-			std::cout "Sent to Rail number 3" << std::endl;
+			std::cout << "Sent to Rail number 3" << std::endl;
 			return 3;
 		}
 		else
@@ -21,7 +20,7 @@ int LStation::signalResponse(bool stopping, int v, Train<L>& t)
 	}
 	else
 	{
-		std::cout << "Confirmed train n" << t.getntrain() << " is stopping at station " << name << " -> ";
+		std::cout << "Confirmed train n" << t.nTrain << " is stopping at station " << name << " -> ";
 		if (isFull())
 		{
 			std::cout << "All rails are occupied -> Sent to parking area" << std::endl;
@@ -29,9 +28,9 @@ int LStation::signalResponse(bool stopping, int v, Train<L>& t)
 		}
 		else
 		{
-			if (v > 0) //Origine -> Fine
+			if (t.get_from() == 0) //Origine -> Fine
 			{
-				if (isFree(0))
+				if (isRailFree(0))
 				{
 					std::cout << "Sent to Rail number 1" << std::endl;
 					return 1;
@@ -44,7 +43,7 @@ int LStation::signalResponse(bool stopping, int v, Train<L>& t)
 			}
 			else //Fine -> Origine
 			{
-				if (isFree(3))
+				if (isRailFree(3))
 				{
 					std::cout << "Sent to Rail number 4" << std::endl;
 					return 4;
@@ -59,15 +58,15 @@ int LStation::signalResponse(bool stopping, int v, Train<L>& t)
 	}
 }
 
-void LStation::parkTrain(int p, Train<L>& t)
+void LStation::parkTrain(int p, Train& t)
 {
 	if (p < 0 || p>6)
 		throw std::invalid_argument("Position out of bounds");
-	t.setpos(p);
+	t.set_rail(p);
 	if (p == -1)
 	{
 		parking_area.push(t);
-		cout << "Rails are all occupied, train n " << t.getntrain() << " sent to the parking area in station " << name << std::endl;
+		std::cout << "Rails are all occupied, train n " << t.nTrain << " sent to the parking area in station " << name << std::endl;
 	}
 	else
 	{
@@ -77,39 +76,39 @@ void LStation::parkTrain(int p, Train<L>& t)
 	}
 }
 
-void LStation::approaching(Traint<L>& t)
+void LStation::approaching(Train& t)
 {
-	if (t.train_type == 1)
+	if (t.get_train_type() == 1)
 	{
-		cout << "Train n " << t.getntrain() << " approaching (5km left) station " << name << ", maximum speed set to 80km/h. \n";
-		if (t.from == 0)
-			t.setspeed(80);
+		std::cout << "Train n " << t.nTrain << " approaching (5km left) station " << name << ", maximum speed set to 80km/h. \n";
+		if (t.get_from() == 0)
+			t.set_speed(80);
 		else
-			t.setspeed(-80);
+			t.set_speed(-80);
 	}
 }
 
-void LStation::startTrain(int p)
+void LStation::startTrain(Train& t)
 {
-	cout << "Train n " << rails[p - 1].getntrain() << " starting from station " << name << ", speed set to 80km/h. \n";
+	std::cout << "Train n " << t.nTrain << " starting from station " << name << ", speed set to 80km/h. \n";
 
-	if (rails[p - 1].from == 0)
-		rails[p - 1].setspeed(80);
+	if (t.get_from() == 0)
+		t.set_speed(80);
 	else
-		rails[p - 1].setspeed(-80);
+		t.set_speed(-80);
 
-	rails[p - 1].setpos(-1);
-
+	t.set_status(1);
+	/*
 	if (isParkAreaEmpty())
 	{
-		rails[p - 1] = nullptr;
+		//rails[p - 1] = nullptr;
 		ntrains--;
 	}
 	else
 	{
 		rails[p - 1] = parking_area.front();
 		parking_area.pop();
-	}
+	}*/
 }
 //Comunica se un certo binario è libero o meno
 bool LStation::isRailFree(int p)			
@@ -119,6 +118,6 @@ bool LStation::isRailFree(int p)
 
 	if (p == 2 || p == 5)
 		std::cout << "è un binario di transito \n";
-
-	return (rails[p] == nullptr);
-}*/
+		//VEDI DOPO
+	return (false);
+}

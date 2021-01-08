@@ -15,26 +15,35 @@ class TrainStation {
 
 public:
 	
-	TrainStation(){std::cout<<"Come sono bello!\n\n";};
+	TrainStation() { clock = 0; };
 	
 	int update_clock() {return ++clock;};
 
-	virtual double update_pos() = 0;
+	virtual double update_pos() { return 0; };
 	
-	virtual int myDelay (const int clock_) = 0;
+	virtual int myDelay(int clock_) { return 0; };
 	
-	virtual void set_timeTable(std::vector<int> &t) = 0;
+	virtual void set_timeTable(std::vector<int> &t) {};
 	
-	virtual void set_train_type(int x) = 0;
+	virtual void set_train_type(int x) {};
 	
-	virtual void set_vMax(int x) = 0;
+	virtual void set_vMax(int x) {};
 	
-	virtual void set_dist_max(int x) = 0;
+	virtual void set_dist_max(int x) {};
 	
-	virtual void set_from(int x) = 0;
+	virtual void set_from(int x) {};
+
+	///
+	virtual bool isFull() { return 0; }
+
+	//Controlla se il parcheggio è vuoto
+	virtual bool isParkAreaEmpty() { return 0; }
+
+	//Controlla se un dato binario è libero
+	virtual bool isRailFree(int p) { return 0; };
 
 protected:
-	virtual void set_speed (const int v) = 0;
+	virtual void set_speed (const int v) {};
 	
 	//vettore per raccogliere i dati della timetable
 	std::vector<std::vector<int>> vec;

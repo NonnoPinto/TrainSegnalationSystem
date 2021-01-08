@@ -18,7 +18,8 @@ public:
 	//Costruttore di defaue base della classe Train
 	//Lancia "invlad argoument" se manca il numero del treno
 	Train(): nTrain(0)
-		{throw std::invalid_argument("Input needed!");};
+		{//throw std::invalid_argument("Input needed!");
+	};
 
 	//Costruttore
 	//Il costruttore ha come unico argomento il numero del treno
@@ -45,17 +46,25 @@ public:
 	
 	//override funzione che calcola il ritardo del treno ad ogni stazione raggiunta
 	//e tiene il conto delle stazioni (comprese quelle in cui non si ferma)
-	int myDelay (const int clock_) override;
+	int myDelay (int clock_) override;
 	
 	//variabili memebro pubbliche
 	//è lasciata pubblica per facilitarne l'accesso alle altre classi
 	//conservando l'incapsulamento grazia al suo essere const
 	//numero del treno
 	const int nTrain;
+
+	int get_vMax() const { return vMax; }
+
+	int get_time(int x) const { return time[x]; }
+
+	int get_next_arrival() const;
+
+	int get_train_type() const { return train_type; };
 	
 	int get_status() const {return status;};
 	
-	int get_vCrociera() const {return vCrociera;};
+	int get_speed() const {return vCrociera;};
 	
 	int get_pos() const {return pos;};
 	
@@ -63,7 +72,11 @@ public:
 	
 	int get_from() const {return from;};
 	
-	void set_rail(int x) {myRail = x;};
+	int get_next_station() const;
+
+	void set_rail(int x) { myRail = x; };
+	
+	int get_delay() {return delay;};
 	
 protected:
 	
@@ -77,7 +90,9 @@ protected:
 	int delay = 0;
 	
 	//stazioni raggiunte
-	int station_ = 0;
+	int station_;
+
+	void set_station(int x) { station_ = x; };
 	
 	//varibiale di controllo sullo stato del treno
 	//0 == alla stazione di partenza, 1 == in marcia,
@@ -114,6 +129,8 @@ protected:
 	void set_from(int x) override {from = x;};
 	
 	int myRail = 0;
+
+	void set_time(int t, int d) { time[t] += d; };
 	
 //private:
 	
