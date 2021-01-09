@@ -14,14 +14,20 @@ class Rails : public RTrain, public AVTrain, public AVSTrain{
 public:
 	Rails() {throw std::invalid_argument ("I need trains!");};
 	
-	Rails(std::vector<Train> v){all_trains_=v;};
+	Rails(std::vector<Train> &v) {
+		all_trains_.resize(v.size());
+		for(int i = 0; i<v.size(); i++){
+			all_trains_[i] = new Train();
+			all_trains_[i] = &v[i];
+		}
+		};
 	
 	//controlla la distanza tra due treni (T2 è più avanti di T1)
 	//e se la distanza è < DIST_MAX, rallenta quello accodato
 	void distance(Train &T1, const Train &T2);
 	
 	//tiene una lista dei treni in moto 
-	void running (std::vector<Train>& v);
+	void running ();
 	
 	//elimina i treni dopo che sono arrivati al capolinea
 	void arrived (Train &T);
@@ -37,18 +43,13 @@ public:
 	
 	void dont_crash();
 	
-	void start(Train& T) {running_.push_back(T);};
-	
-private:
+//private:
 	//sono definiti private due vettori della sola classe Train
 	//treni non fermi
 	std::vector<Train> onRails_;
 	
-	//treni in marcia
-	std::vector<Train> running_;
-	
 	//tutti i treni
-	std::vector<Train> all_trains_;
+	std::vector<Train*> all_trains_;
 	
 	//treni arrivani
 	int arrived_ = 0;

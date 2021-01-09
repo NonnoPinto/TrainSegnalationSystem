@@ -90,6 +90,9 @@ int main(){
 	int i;
 	int status;
 	char c;
+	
+	//cout << "IL DATO CHE MI SERVE " << *R.all_trains_.size();
+	
 	while (!R.runningIsFree())
 	{
 		i = 0;
@@ -108,7 +111,6 @@ int main(){
 						n = 0;
 					else
 						n = stations.size()-1;
-					R.start(trains[i]);
 					stations[n].parkTrain(stations[n].signalResponse(true, trains[i]), trains[i]);
 					stations[n].startTrain(trains[i]);
 				}
@@ -192,11 +194,16 @@ int main(){
 			//cout << i;
 			i++;
 		}
+		if(clock%10 == 0)
+			cin >> c;
+		
+		//cout << "trains[0].status = " << trains[0].get_status() <<endl;
+		
 		R.dont_crash();
 		//cout << clock << " : " << endl;
 		clock++;
 	}
-
+	
 	cout << endl;
 	
 return 0;
