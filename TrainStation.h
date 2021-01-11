@@ -9,7 +9,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
+#include <memory>
+#include <algorithm> 
 
 class TrainStation {
 
@@ -32,15 +33,6 @@ public:
 	virtual void set_dist_max(int x) {};
 	
 	virtual void set_from(int x) {};
-
-	///
-	virtual bool isFull() { return 0; }
-
-	//Controlla se il parcheggio è vuoto
-	virtual bool isParkAreaEmpty() { return 0; }
-
-	//Controlla se un dato binario è libero
-	virtual bool isRailFree(int p) { return 0; };
 
 protected:
 	virtual void set_speed (const int v) {};

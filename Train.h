@@ -8,9 +8,9 @@
 
 #include "TrainStation.h"
 
-#include <iostream>
+/*#include <iostream>
 #include <algorithm> 
-#include <vector>
+#include <vector>*/
 
 class Train : public TrainStation {
 	
@@ -25,7 +25,9 @@ public:
 	//Il costruttore ha come unico argomento il numero del treno
 	Train(int n): nTrain(n){};
 	
-	Train& operator=(const Train &T);
+	//blocco costruttore di copia e assegnamento di copia 
+	Train(const Train& T) = delete;
+	Train& operator=(const Train &T) = delete;
 	
 	//overload == per il confronto tra treni
 	//il numero del treno lo identifica univocamente
@@ -34,137 +36,60 @@ public:
 	//overload != per il confronto tra treni
 	bool operator!=(Train &T) {return nTrain != T.nTrain;};
 	
-	//override della funzione principale che, ad ogni ciclo,
-	//aggiorna la posizione del treno in base allo status e alla v di crociera
-	double update_pos() override;
-	
-	//override in line della funzione che aggiorna la velocità di crociera del treno
-	void set_speed (const int v) override {vCrociera = v;};
-	
-	//funziona per la modifica dello stato del treno
-	void set_status (const int s) {status = s;};
-	
-	//override funzione che calcola il ritardo del treno ad ogni stazione raggiunta
-	//e tiene il conto delle stazioni (comprese quelle in cui non si ferma)
-	int myDelay (int clock_) override;
-	
 	//variabili memebro pubbliche
 	//è lasciata pubblica per facilitarne l'accesso alle altre classi
 	//conservando l'incapsulamento grazia al suo essere const
 	//numero del treno
 	const int nTrain;
+	
+	//funzione principale che, ad ogni ciclo,
+	//aggiorna la posizione del treno in base allo status e alla v di crociera
+	virtual double update_pos() = 0;
+	
+	//funzione che calcola il ritardo del treno ad ogni stazione raggiunta
+	//e tiene il conto delle stazioni (comprese quelle in cui non si ferma)
+	virtual int myDelay (int clock_) = 0;
 
-	int get_vMax() const { return vMax; }
+	virtual int get_status() const = 0;
+	
+	virtual int get_time(int x) const = 0;
 
-	int get_time(int x) const { return time[x]; }
+	virtual int get_rail() const = 0 ;
 
-	int get_next_arrival() const;
+	virtual double get_pos() const = 0;
 
-	int get_train_type() const { return train_type; };
-	
-	int get_status() const {return status;};
-	
-	int get_speed() const {return vCrociera;};
-	
-	int get_pos() const {return pos;};
-	
-	int get_dist_max() const {return dist_max;};
-	
-	int get_from() const {return from;};
-	
-	int get_next_station() const;
+	virtual int get_speed() const = 0;
 
-	void set_rail(int x) { myRail = x; };
-	
-	int get_delay() {return delay;};
-	
-protected:
-	
-	//velocità di crociera
-	int vCrociera = 0;
-	
-	//posizione attuale del treno lungo la linea ferroviaria
-	double pos = 0;
-	
-	//ritardo accumulato
-	int delay = 0;
-	
-	//stazioni raggiunte
-	int station_;
+	virtual int get_delay() const = 0;
 
-	void set_station(int x) { station_ = x; };
-	
-	//varibiale di controllo sullo stato del treno
-	//0 == alla stazione di partenza, 1 == in marcia,
-	//2 == fermo (parcheggio o fermata), 3 == arrivato a destinazione
-	int status = 0;
-	
-	//***Variabili membro che differiscono per ogni treno
-	//***e rispettive funzioni per accedervi
-	
-	//vettore con gli orari di arrivo previsti in ogni stazione
-	//l'orario è espresso in minuti dopo la partenza
-	std::vector<int> time;
-	
-	void set_timeTable(std::vector<int>& t) override {time = t;};
-	
+	virtual bool stop_next_station() = 0;
+
 	//tipo di treno
 	int train_type;
-	
-	void set_train_type(int x) override {train_type=x;};
-	
-	//velocità massima
+
+	//velocità masssima
 	int vMax;
-	
-	void set_vMax(int x) override {vMax = x;};
-	
-	//distanza massima tra due treni
+
+	//distanza massima tra due treni (i 10 km di sicurezza + i km percorsi in un minuto)
 	int dist_max;
-	
-	void set_dist_max(int x) override {dist_max = x;};
-	
+
 	//variabile di controllo dell'orgine del treno
 	int from;
-	
-	void set_from(int x) override {from = x;};
-	
-	int myRail = 0;
 
-	void set_time(int t, int d) { time[t] += d; };
-	
-//private:
-	
-/*	bool isParkAreaEmpty() override;
-	
-	bool isRailFree(int p) override;
-	
-	bool isFull() override;
-	
-	void startTrain(int p) override;
-	
-	bool runningIsFree() override;*/
+	//restituisce il successivo tempo di arrivo in base al senso di marcia
+	virtual int get_next_arrival() const = 0;
 
+	//restituisce la stazione successiva in base al senso di marcia
+	virtual int get_next_station() const = 0;
+	
+	//funzione che aggiorna la velocità di crociera del treno
+	virtual void set_speed (const int v) = 0;
+	
+	//funzione per la modifica dello stato del treno
+	virtual void set_status (const int s) = 0;
+	
+	//imposta il binario di transito
+	virtual void set_rail(int x) = 0;
 };
 
 #endif
-
-	/*//controlla la distanza tra due treni (T2 è più avanti di T1)
-	//e se la distanza è < (km di sicurezza + dist_max), rallenta quello accodato
-	virtual void distance(Train &T1, const Train &T2) = 0;
-	
-	//tiene una lista dei treni non fermi
-	virtual void running (std::vector<Train>& v) = 0;
-	
-	//elimina i treni dopo che sono arrivati al capolinea
-	virtual void arrived () = 0;
-	
-	virtual bool runningIsFree() = 0;
-	
-	//STL sort
-	//my_sort
-	virtual bool myDist (Train &T1, Train &T2) = 0;
-	
-	//mette in ordine i treni non fermi in base alla loro posizione lungo la ferrovia
-	virtual void onRailsSort (std::vector<Train>& v) = 0;*/
-	
-	//int get_status() const {return status;};
