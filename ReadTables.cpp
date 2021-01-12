@@ -75,6 +75,7 @@ void ReadTables::fill_matrix() {
 
 	std::string s_succ;
 
+
 	//creo un array di dimensione (stazioni-1) con le distanze tra le stazioni
 	for (int i = 0; i < vec2.size() - 1; i++) {
 		s_prec = vec2[i][2];
@@ -86,7 +87,7 @@ void ReadTables::fill_matrix() {
 		dist[i + 1] = km_tmp;
 	}
 
-	//velocità massima del i-esimo treno
+	//velocitÃ  massima del i-esimo treno
 	double v;
 
 	//indice treno
@@ -99,7 +100,16 @@ void ReadTables::fill_matrix() {
 		else
 			v = 300;
 
-		//indice tempo di arrivo alla stazione k-esima
+		if (vec[i][1] == 1) {
+			std::vector<int> tmp;
+			for (int k = 0; k < dist.size(); k++)
+				tmp.push_back(dist[k]);
+			for (int k = 0; k < dist.size(); k++)
+				dist[dist.size() - 1 - k] = tmp[k];
+		}
+				//std::reverse(dist.begin(), dist.end());
+
+				//indice tempo di arrivo alla stazione k-esima
 		for (int k = 4; k < vec[i].size(); k++) {
 
 			if (v != 160 && vec2[k - 3][1].compare("1") == 0)	//se treno AV o AVS
@@ -114,18 +124,19 @@ void ReadTables::fill_matrix() {
 
 					tmp--;
 
-					km += dist[tmp - 2] + 10;	//sommo 10 perchè non si è fermato
+					km += dist[tmp - 2] + 10;	//sommo 10 perchÃ¨ non si Ã¨ fermato
 				}
 
 				//cout << "km " << km << " + " << dist[k-3] << endl;
 
 				//calcolo tempo ipotetico minimo di percorrenza alla vel massima
-				double h = ((dist[k - 3] + km) / v) * 60 + vec[i][tmp];	/*dist[tmp-3] == i km alla prima stazione senza fermata
-																		*km == i km da dist[tmp-3] fino alla prox fermata
-																		*-10 == i km percorsi agli 80 all'ora
+				double h = ((dist[k - 3] + km) / v) * 60 + vec[i][tmp];	/*dist[k-3] == i km alla prima stazione senza fermata
+																		*km == i km da dist[k-3] fino alla prox fermata
+																		*
 																		*/
-				//cast
-				int intH = round((h + 0.5) + 7.5);		//7.5 == minuto per fare 10 km ai 80 km/h
+																		//cast
+				int intH = round((h + 0.5) + 7.5 + 5);		//7.5 == minuto per fare 10 km ai 80 km/h
+															//5 == minuti per la fermata
 
 				if (vec[i][k] < intH)
 					vec[i][k] = intH;
@@ -194,7 +205,7 @@ void ReadTables::print_lined() {
 
 void ReadTables::print_timet() {
 
-	std::cout << "L";
+//	std::cout << "L";
 
 	for (int i = 0; i < vec.size(); i++) {
 		for (int j = 0; j < vec[i].size(); j++)
@@ -259,8 +270,14 @@ void ReadTables::filler() {
 	std::string km_o = "0";
 
 	vec2[0].push_back(km_o);
-}
 
+
+	for (int i = 0; i < vec.size(); i++)
+		for (int j = 3; j < vec[i].size(); j++)
+			if (vec[i].size() - 3 < vec2.size())
+				vec[i].push_back(0);
+
+}
 void ReadTables::eraseStations() {
 
 	for (int i = 0; i < vec.size(); i++)

@@ -25,7 +25,7 @@ void TrainStation::read_timetable() {
 
 		while (ss >> v)
 			new_vec.push_back(v);
-			
+
 		vec.push_back(new_vec);
 	}
 }
@@ -66,66 +66,66 @@ void TrainStation::strin_conc() {
 }
 
 void TrainStation::fill_matrix() {
-	
+
 	//variabili ausiliarie
 	std::vector<int> dist(vec2.size(), 0);
-	
+
 	size_t sz_prec;
-		
+
 	size_t sz_succ;
-		
+
 	string s_prec;
-		
+
 	string s_succ;
-	
+
 	//creo un array di dimensione (stazioni-1) con le distanze tra le stazioni
 	for(int i = 0; i<vec2.size()-1; i++){
 		s_prec = vec2[i][2];
-		
+
 		s_succ = vec2[i+1][2];
-		
+
 		int km_tmp = stoi(s_succ, &sz_succ) - stoi(s_prec, &sz_prec) - 10; //tolgo 10 per le zone
 																	//ai 80km/h
 		dist[i+1] = km_tmp;
 	}
-	
-	//velocitÃ  massima del i-esimo treno
+
+	//velocità massima del i-esimo treno
 	double v;
-	
+
 	//indice treno
 	for (int i=0; i<vec.size(); i++){
-		
+
 		if (vec[i][2] == 1)
 			v = 160;
 		else if (vec[i][2] == 2)
 			v = 240;
 		else
 			v = 300;
-		
+
 		//indice tempo di arrivo alla stazione k-esima
 		for(int k = 4; k < vec[i].size(); k++){
-			
+
 			if(v!=160 && vec2[k-3][1].compare("1") == 0) //se treno AV o AVS
 				vec[i][k] = -2;							//imposto segnale di controllo
-			
+
 			else{
 				int km = 0;
 				int tmp=k-1;
 				while((vec[i][tmp])==-2){ //sommo tutte le non fermate, tranne la prima
 					tmp--;
-					km += dist[tmp-2] + 10; //sommo 10 perchÃ¨ non si Ã¨ fermato
+					km += dist[tmp-2] + 10; //sommo 10 perchè non si è fermato
 				}
-				
+
 				//cout << "km " << km << " + " << dist[k-3] << endl;
-				
+
 				//calcolo tempo ipotetico minimo di percorrenza alla vel massima
 				double h = ((dist[k-3]+km)/v)*60 + vec[i][tmp];//dist[tmp-3] == i km alla prima stazione senza fermata
 												//km == i km da dist[tmp-3] fino alla prox fermata
 												//-10 == i km percorsi agli 80 all'ora
-				
+
 				//cast
 				int intH = round((h+0.5) + 7.5); //7.5 == minuto per fare 10 km ai 80 km/h
-				
+
 				if (vec[i][k] < intH)
 					vec[i][k] = intH;
 			}
@@ -179,9 +179,9 @@ void TrainStation::check_trainstime() {
 }
 
 void TrainStation::print_lined() {
-	
+
 	cout << "L";
-	
+
 	for (int i = 0; i < vec2.size(); i++) {
 		for (int j = 0; j < vec2[i].size(); j++)
 			cout << vec2[i][j] << " ";
@@ -193,7 +193,7 @@ void TrainStation::print_lined() {
 void TrainStation::print_timet() {
 
 	cout << "L";
-	
+
 	for (int i = 0; i < vec.size(); i++) {
 		for (int j = 0; j < vec[i].size(); j++)
 			cout << vec[i][j] << " ";
@@ -204,7 +204,7 @@ void TrainStation::print_timet() {
 void TrainStation::check_dist() {
 
 	int n = 4;
-	
+
 	for (int i = 0; i < vec2.size() - 2; i++) {
 
 		string::size_type sz;
@@ -264,25 +264,25 @@ void TrainStation::eraseStations(){
 }
 
 void TrainStation::read_inputs(){
-	
+
 	read_timetable();
-	
+
 	read_linedescription();
-	
+
 	strin_conc();
-	
+
 	filler();
-	
+
 	//check_trainstime();
-	
+
 	check_dist();
-	
+
 	eraseStations();
-	
+
 	fill_matrix();
-	
+
 	print_lined();
-	
+
 	print_timet();
 }*/
 

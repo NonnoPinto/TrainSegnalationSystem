@@ -2,8 +2,8 @@
 #include <vector>
 #include <string>
 
-class ReadTables{
-public: 
+class ReadTables {
+public:
 	void read_timetable();
 
 	void read_linedescription();
@@ -15,7 +15,7 @@ public:
 	//Serve per poter successivamente effettuare confronti tra le distanze delle stazioni
 	void fill_matrix();
 
-	//funzione che confronta i tempi teorici con i limiti di velocit√† dei treni
+	//funzione che confronta i tempi teorici con i limiti di velocit‡ dei treni
 	void check_trainstime();
 
 	void print_lined();
@@ -25,22 +25,22 @@ public:
 	//funzione che imposta a -1 gli orari che corrispondono a stazioni piu vicine di 20km dalla precedente
 	//se la stazione di capolinea dista < 20km dalla precedente viene settata a -1 la precedente
 	void check_dist();
-	
+
 	void filler();
-	
+
 	void eraseStations();
-	
+
 	void read_inputs();
 
-	std::vector<std::vector<int>> get_timeTable() {return vec;};
-	
-	std::vector<std::vector<std::string>> get_lineDescription() {return vec2;};
+	std::vector<std::vector<int>> get_timeTable() { return vec; };
+
+	std::vector<std::vector<std::string>> get_lineDescription() { return vec2; };
 
 private:
-	
+
 	//vettore per raccogliere i dati della timetable
 	std::vector<std::vector<int>> vec;
-	
+
 	//vettore per raccogliere i dati della line description
 	std::vector<std::vector<std::string>> vec2;
 };
