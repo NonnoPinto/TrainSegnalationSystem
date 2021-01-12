@@ -16,6 +16,8 @@ public:
 		set_station_type(0);	//Tipo di stazione = 0 (principale)
 
 		set_rails(nrails);		//Impostazione dimensione del vettore rails = nrails (in questo caso 4)
+
+		//final_pos = p;
 	}
 
 	//Restituisce il numero del binario su cui passare in base al segnale (transito o fermata), 
@@ -37,6 +39,12 @@ public:
 	//Comunica quando un treno partito risulta a più di 5km da una stazione 
 	//e lo fa accelerare alla sua massima velocità
 	void leaving(std::shared_ptr<Train> t) override;
+
+	//Imposta le caratteristiche di un treno considerato come arrivato a destinazione
+	//cambia la velocità a 0 e lo status a 3 (treno arrivato a destinazione)
+	void arrived(std::shared_ptr<Train> t) override;
+
+	//int final_pos;
 };
 
 #endif // PSTATION_H

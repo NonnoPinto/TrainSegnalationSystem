@@ -1,0 +1,20 @@
+Padova
+Venezia 0 20
+Roma 1 25
+Parigi 0 45
+Los Angeles 1 55
+Torino 1 75
+Oslo 0 95
+Mosca 0 120
+Saint Tropez 1 140
+Milano 1 160
+Siviglia 0 185
+Amburgo 0 205
+Monaco 0 210
+Città del Vaticano 1 230
+Sarajevo 1 240
+Lima 0 265
+San Paolo 1 275
+Marsiglia 1 305
+Genova 0 330
+Cracovia 1 350

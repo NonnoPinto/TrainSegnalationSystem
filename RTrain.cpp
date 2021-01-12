@@ -3,38 +3,40 @@
 
 #include "RTrain.h"
 
- //costruttore di default
+//costruttore di default
 RTrain::RTrain() : Train() {};
 
 //Costruttore
 RTrain::RTrain(int n, int from_, std::vector<int>& timeTable, std::vector<std::string>& line) :
-	Train(n) //se il treno parte dall'ultima stazione
-							//la velocità si considera negativa
+	Train(n) 
 {
 	time = timeTable; //importa la timetable
 
 	train_type = 1;
+
 	dist_max = 10 + 160 / 60;
+
 	from = from_;
-	vMax = 160 - (160 * 2 * from_);
+
+	vMax = 160 - (160 * 2 * from_);		//se il treno parte dall'ultima stazione
+										//la velocità si considera negativa
 
 	if (from_ == 1)
 	{
-		pos = std::stoi(line[line.size() - 1]); //se il treno parte dall'ultima stazione,
+		pos = std::stoi(line[line.size() - 1]);		//se il treno parte dall'ultima stazione,
 													//importa la lunghezza dell'intera linea 
 		station_ = line.size() - 1;
+
 		std::reverse(time.begin(), time.end());
 	}
 	else
-	{
 		station_ = 0.0;
-	}
 }
 
 
 //calcola la posizione del treno
-double RTrain::update_pos() {		//se il treno è in marcia,
-	if (status == 1 || status == 4)	//aggiungo i km percorsi in un minuto
+double RTrain::update_pos() {			//se il treno è in marcia,
+	if (status == 1 || status == 4)		//aggiungo i km percorsi in un minuto
 		pos += (vCrociera / 60.0);
 	if (pos < 1)
 		pos = 0.0;
@@ -83,17 +85,3 @@ int RTrain::get_next_station() const {
 	else
 		return (station_ - 1);
 }
-
-/*RTrain& RTrain::operator=(const RTrain &T){
-
-	RTrain(T.nTrain, T.from, T.time);
-		vCrociera = T.vCrociera;
-		pos = T.pos;
-		delay = T.delay;
-		station_ = T.station_;
-		status = T.status;
-	//else
-		//std::cout << "Stai cercando di copiare due treni diversi, pirla!";
-
-	return *this;
-}*/

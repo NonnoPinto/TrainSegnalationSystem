@@ -35,6 +35,9 @@ public:
 
 	int get_delay() const override { return delay; };
 
+	//funzione booleana
+	//true se il treno si fermerà alla prossima stazione
+	//false altrimenti
 	bool stop_next_station() override { return time[get_next_station()] != -2; };
 
 	//restituisce il successivo tempo di arrivo in base al senso di marcia
@@ -42,20 +45,6 @@ public:
 
 	//restituisce la stazione successiva in base al senso di marcia
 	int get_next_station() const override;
-
-	//RTrain& operator=(const RTrain &T);
-
-	/*//tipo di treno
-	const int train_type = 1;
-
-	//velocità masssima
-	const int vMax;
-
-	//distanza massima tra due treni (i 10 km di sicurezza + i km percorsi in un minuto)
-	const int dist_max = 10 + 240/60;
-
-	//variabile di controllo dell'orgine del treno
-	const int from;*/
 
 protected:
 	//velocità di crociera

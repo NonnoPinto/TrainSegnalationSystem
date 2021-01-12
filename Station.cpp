@@ -1,5 +1,5 @@
 /* author: Andrei Ovidiu Danciu - 1224263
- * File cpp della classe "Station"*/
+ * File cpp della classe madre "Station"*/
 
 #include "Station.h"
 
@@ -43,4 +43,23 @@ void Station::set_rails(int n)
 		rails[i] = nullptr;
 		savedrails.push_back(0);
 	}
+}
+
+//Funzione ausiliaria per stampare se i binari di una stazione sono occupati o meno (utilizzata in fase di test)
+void Station::printRailStatus()
+{
+	std::cout << "STATION " << name << "\n";
+	for (int i = 0; i < nrails; i++)
+	{
+		std::cout << "Rail n. " << i << "IsFree: ";
+		if (isRailFree(i))
+			std::cout << "Yes \n";
+		else
+			std::cout << "No \n";
+	}
+
+	if (isParkAreaEmpty())
+		std::cout << "\n" << " PARCHEGGIO VUOTO " << "\n";
+	else
+		std::cout << "\n" << " PARCHEGGIO NON VUOTO  " << "\n";
 }

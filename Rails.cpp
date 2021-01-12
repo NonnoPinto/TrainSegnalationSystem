@@ -4,11 +4,11 @@
 
 #include "Rails.h"
 
- //controlla la distanza tra due treni (T2 √® pi√π avanti di T1)
- //e se la distanza √® < DIST_MAX, rallenta quello accodato
+ //controlla la distanza tra due treni (T2 Ë pi˘ avanti di T1)
+ //e se la distanza Ë < DIST_MAX, rallenta quello accodato
 void Rails::distance(std::shared_ptr<Train> T1, std::shared_ptr<Train> T2) {
 	double d = abs((*T1).get_pos() - (*T2).get_pos());
-	
+
 	if (abs(T2->get_speed()) <= abs(T1->get_speed()) && abs((*T2).get_speed()) != 80) {
 		if (d < 10 && abs((*T1).get_speed()) != 100) {
 			if (T1->from == 0)
@@ -35,12 +35,6 @@ void Rails::distance(std::shared_ptr<Train> T1, std::shared_ptr<Train> T2) {
 			<< (*T2).nTrain << std::endl;
 	}
 }
-
-//STL sort
-//my_sort
-/*static bool myDist(std::shared_ptr<Train> T1, std::shared_ptr<Train> T2) {
-	return (T1->get_pos() < T2->get_pos());
-}*/
 
 //mette in ordine i treni non fermi in base alla loro posizione lungo la ferrovia
 void Rails::onRailsSort() {
@@ -76,29 +70,26 @@ void Rails::running() {
 	if (all_trains_.size() == 0)
 		return;
 
-	/*	for (int i = 0; i < all_trains_.size(); i++)
-			if ((*all_trains_[i]).get_status() == 1 || (*all_trains_[i]).get_status() == 4) {
-				//std::cout << "L'HO MESSO DENTRO\n";
-				n++;
-			}*/
 
 	onRails_.erase(onRails_.begin(), onRails_.end());
-	
+
 	for (int i = 0; i < all_trains_.size(); i++)
 		if ((*all_trains_[i]).get_status() == 1 || (*all_trains_[i]).get_status() == 4) {
 			onRails_.push_back(all_trains_[i]);
-		
-	}
+
+		}
 	std::cout << std::endl;
 }
 
+//ordina le funzioni per mantenere la distanza tra i treni
 void Rails::dont_crash() {
 
 	std::vector<std::shared_ptr<Train>> straight;
 	std::vector<std::shared_ptr<Train>> backwards;
 
+	
 	running();
-
+	
 	if (onRails_.size() >= 2)
 	{
 
@@ -110,13 +101,13 @@ void Rails::dont_crash() {
 			else
 				backwards.push_back(onRails_[i]);
 		}
-
+		
 		if (straight.size() >= 2)
 			for (int i = 0; i < straight.size() - 1; i++)
 				distance(straight[i], straight[i + 1]);
-
+		
 		if (backwards.size() >= 2)
 			for (int i = backwards.size() - 1; i > 0; i--)
-				distance(backwards[i], backwards[i-1]);
+				distance(backwards[i], backwards[i - 1]);
 	}
 }

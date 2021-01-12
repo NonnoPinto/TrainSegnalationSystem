@@ -1,25 +1,25 @@
 /* author: Giovanni Zago - 1226024
- * Questo header + una prima classe derivata "Treni". A sua volta ha tre classi derivate.
+ * Header della classe madre "Treni"
  * Dichiara le funzioni virtuali,
- * lasciando il costruttore ai diversi tipi di treno.*/
+ * lasciando il costruttore e gli override ai diversi tipi di treno (classi figlie).
+ */
 
 #ifndef Train_h
 #define Train_h
 
-#include "TrainStation.h"
 
- /*#include <iostream>
- #include <algorithm>
- #include <vector>*/
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string>
+#include <math.h>
 
-class Train : public TrainStation {
+class Train {
 
 public:
-	//Costruttore di defaue base della classe Train
-	//Lancia "invlad argoument" se manca il numero del treno
-	Train() : nTrain(0)
-	{//throw std::invalid_argument("Input needed!");
-	};
+
+	//Costruttore di default base della classe Train
+	Train() : nTrain(0) {};
 
 	//Costruttore
 	//Il costruttore ha come unico argomento il numero del treno
@@ -37,7 +37,7 @@ public:
 	bool operator!=(Train& T) { return nTrain != T.nTrain; };
 
 	//variabili memebro pubbliche
-	//√® lasciata pubblica per facilitarne l'accesso alle altre classi
+	//Ë lasciata pubblica per facilitarne l'accesso alle altre classi
 	//conservando l'incapsulamento grazia al suo essere const
 	//numero del treno
 	const int nTrain;
@@ -63,8 +63,8 @@ public:
 	virtual int get_speed() const = 0;
 
 	virtual int get_delay() const = 0;
-	
-	//funzione che aggiorna la velocit√† di crociera del treno
+
+	//funzione che aggiorna la velocit‡ di crociera del treno
 	virtual void set_speed(const int v) = 0;
 
 	//funzione per la modifica dello stato del treno
@@ -72,14 +72,14 @@ public:
 
 	//imposta il binario di transito
 	virtual void set_rail(int x) = 0;
-	
+
 	//funzione booleana che segnala alla stazione l'eventuale passaggio o fermata del treno
 	virtual bool stop_next_station() = 0;
 
 	//tipo di treno
 	int train_type;
 
-	//velocit√† masssima
+	//velocit‡ masssima
 	int vMax;
 
 	//distanza massima tra due treni (i 10 km di sicurezza + i km percorsi in un minuto)

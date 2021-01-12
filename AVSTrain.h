@@ -1,5 +1,5 @@
 /* author: Giovanni Zago - 1226024
- * header della classe derivata "Treni ad Alta Velocit√† Super"*/
+ * header della classe derivata "Treni ad Alta Velocit‡ Super"*/
 
 #ifndef AVSTrain_h
 #define AVSTrain_h
@@ -16,7 +16,7 @@ public:
 	AVSTrain(int n, int from_, std::vector<int>& timeTable, std::vector<std::string>& line);
 
 	//override funzione che calcola il ritardo del treno ad ogni stazione raggiunta
-	//e tiene il conto delle stazioni (comprese quelle in cui non si ferma)
+		//e tiene il conto delle stazioni (comprese quelle in cui non si ferma)
 	int myDelay(int clock_) override;
 
 	//override della funzione principale che, ad ogni ciclo,
@@ -35,6 +35,9 @@ public:
 
 	int get_delay() const override { return delay; };
 
+	//funzione booleana
+	//true se il treno si fermer‡ alla prossima stazione
+	//false altrimenti
 	bool stop_next_station() override { return time[get_next_station()] != -2; };
 
 	//restituisce il successivo tempo di arrivo in base al senso di marcia
@@ -43,25 +46,11 @@ public:
 	//restituisce la stazione successiva in base al senso di marcia
 	int get_next_station() const override;
 
-	//RTrain& operator=(const RTrain &T);
-
-	/*//tipo di treno
-	const int train_type = 1;
-
-	//velocit√† masssima
-	const int vMax;
-
-	//distanza massima tra due treni (i 10 km di sicurezza + i km percorsi in un minuto)
-	const int dist_max = 10 + 300/60;
-
-	//variabile di controllo dell'orgine del treno
-	const int from;*/
-
 protected:
-	//velocit√† di crociera
+	//velocit‡ di crociera
 	int vCrociera = 0;
 
-	//funzione che aggiorna la velocit√† di crociera del treno
+	//funzione che aggiorna la velocit‡ di crociera del treno
 	void set_speed(const int v) { vCrociera = v; };
 
 	//posizione attuale del treno lungo la linea ferroviaria
@@ -82,7 +71,7 @@ protected:
 	void set_status(const int s) { status = s; };
 
 	//vettore con gli orari di arrivo previsti in ogni stazione
-	//l'orario √® espresso in minuti dopo la partenza
+	//l'orario Ë espresso in minuti dopo la partenza
 	std::vector<int> time;
 
 	//binario su cui il treno sta correndo

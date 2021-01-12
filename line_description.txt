@@ -1,0 +1,10 @@
+Valhalla
+Liberty City 0 20
+Mordor 1 30
+Hogwarts 1 45
+LEGO city 0 80
+Titano 0 100
+Atlantide 1 115
+Gerusalemme 0 130
+Gotham City 1 145
+Topolinia 0 180

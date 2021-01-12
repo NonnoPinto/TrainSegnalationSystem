@@ -1,13 +1,19 @@
+/*
+* Author: Niccolò Castellan - 1227137
+* Header : Classe base da cui vengono derivate le classi derivate Train,Station e Rails
+* Implementazione delle funzioni della classe ReadTable
+*/
+
 #include <math.h>
 #include <fstream>
 #include <sstream>
 
 #include "ReadTables.h"
 
-
+//Funzione che legge,acquisice le informazioni della TimeTable e le memorizza in una matrice
 void ReadTables::read_timetable() {
 
-	std::ifstream file_in("TimeTable.txt");
+	std::ifstream file_in("timetables.txt");
 
 	std::string line;
 
@@ -26,8 +32,9 @@ void ReadTables::read_timetable() {
 	}
 }
 
+//Funzione che legge,acquisice le informazioni della line_description e le memorizza in una matrice
 void ReadTables::read_linedescription() {
-
+	
 	std::ifstream file_in2("line_description.txt");
 
 	std::string line2;
@@ -47,6 +54,7 @@ void ReadTables::read_linedescription() {
 	}
 }
 
+// Funzione che concatena in un unica stringa i nomi delle stazioni formati da due stringhe
 void ReadTables::strin_conc() {
 
 	for (int i = 0; i < vec2.size(); i++) {
@@ -62,6 +70,8 @@ void ReadTables::strin_conc() {
 	}
 }
 
+//Funzione che inserisce nella matrice il tipo della stazione principale e il km (fissato a 0)
+//Serve per poter successivamente effettuare confronti tra le distanze delle stazioni
 void ReadTables::fill_matrix() {
 
 	//variabili ausiliarie
@@ -82,12 +92,14 @@ void ReadTables::fill_matrix() {
 
 		s_succ = vec2[i + 1][2];
 
-		int km_tmp = std::stoi(s_succ, &sz_succ) - std::stoi(s_prec, &sz_prec) - 10; //tolgo 10 per le zone
-																	//ai 80km/h
+		//tolgo 10 per le zone
+		//ai 80km/h
+		int km_tmp = std::stoi(s_succ, &sz_succ) - std::stoi(s_prec, &sz_prec) - 10;
+																	
 		dist[i + 1] = km_tmp;
 	}
 
-	//velocitÃ  massima del i-esimo treno
+	//velocità massima del i-esimo treno
 	double v;
 
 	//indice treno
@@ -107,37 +119,35 @@ void ReadTables::fill_matrix() {
 			for (int k = 0; k < dist.size(); k++)
 				dist[dist.size() - 1 - k] = tmp[k];
 		}
-				//std::reverse(dist.begin(), dist.end());
+		//std::reverse(dist.begin(), dist.end());
 
-				//indice tempo di arrivo alla stazione k-esima
+		//indice tempo di arrivo alla stazione k-esima
 		for (int k = 4; k < vec[i].size(); k++) {
 
 			if (v != 160 && vec2[k - 3][1].compare("1") == 0)	//se treno AV o AVS
-				vec[i][k] = -2;		//imposto segnale di controllo
+				vec[i][k] = -2;									//imposto segnale di controllo
 
 			else {
 				int km = 0;
 
 				int tmp = k - 1;
 
-				while ((vec[i][tmp]) == -2) {	//sommo tutte le non fermate, tranne la prima
+				while ((vec[i][tmp]) == -2) {					//sommo tutte le non fermate, tranne la prima
 
 					tmp--;
 
-					km += dist[tmp - 2] + 10;	//sommo 10 perchÃ¨ non si Ã¨ fermato
+					km += dist[tmp - 2] + 10;					//sommo 10 perchè non si è fermato
 				}
 
-				//cout << "km " << km << " + " << dist[k-3] << endl;
-
 				//calcolo tempo ipotetico minimo di percorrenza alla vel massima
-				double h = ((dist[k - 3] + km) / v) * 60 + vec[i][tmp];	/*dist[k-3] == i km alla prima stazione senza fermata
-																		*km == i km da dist[k-3] fino alla prox fermata
-																		*
-																		*/
-																		//cast
-				int intH = round((h + 0.5) + 7.5 + 5);		//7.5 == minuto per fare 10 km ai 80 km/h
-															//5 == minuti per la fermata
+				double h = ((dist[k - 3] + km) / v) * 60 + vec[i][tmp];					/*dist[k-3] == i km alla prima stazione senza fermata
+																						*km == i km da dist[k-3] fino alla prox fermata
+																						*/
 
+																						//cast
+				int intH = round((h + 0.5) + 7.5 + 5);									//7.5 == minuto per fare 10 km ai 80 km/h
+																						//5 == minuti per la fermata
+																						 
 				if (vec[i][k] < intH)
 					vec[i][k] = intH;
 			}
@@ -145,54 +155,10 @@ void ReadTables::fill_matrix() {
 	}
 }
 
-/*
-void ReadTables::check_trainstime() {
-
-	for (int i = 1; i < vec2.size(); i++) {
-
-		size_t sz;
-
-		std::string s = vec2[i][2];
-
-		int km = stoi(s, &sz);
-
-		double v;
-
-		for (int j = 0; j < vec.size(); j++) {
-
-			int idx = 4;
-
-			for (int n = 0; n < vec2[j].size(); n++) {
-				if (vec[j][2] == 1)
-					v = 160;
-				else if (vec[j][2] == 2)
-					v = 240;
-				else
-					v = 300;
-
-				double h = double(km / v);
-
-				int conf = (h * 60);
-
-				//cout << " " << conf << " ";
-
-				//cout << " " << vec[j][idx] << " ";
-
-				if (idx > vec2.size())
-					break;
-				if (conf > vec[j][idx]) {
-
-					vec[j][idx] = conf;
-
-					idx++;
-				}
-			}
-		}
-	}
-}
-*/
-
+//Stampa a schermo la matrice della linea ferroviaria
 void ReadTables::print_lined() {
+
+	std::cout << "\n" << " ******TimeLine****** " << "\n";
 
 	for (int i = 0; i < vec2.size(); i++) {
 		for (int j = 0; j < vec2[i].size(); j++)
@@ -203,9 +169,10 @@ void ReadTables::print_lined() {
 
 }
 
+//Stampa a schermo la matrice dei treni
 void ReadTables::print_timet() {
 
-//	std::cout << "L";
+	std::cout << "\n" << " ******TimeTable****** " << "\n";
 
 	for (int i = 0; i < vec.size(); i++) {
 		for (int j = 0; j < vec[i].size(); j++)
@@ -215,6 +182,8 @@ void ReadTables::print_timet() {
 	}
 }
 
+//funzione che imposta a -1 gli orari che corrispondono a stazioni piu vicine di 20km dalla precedente
+//se la stazione di capolinea dista < 20km dalla precedente viene settata a -1 la precedente
 void ReadTables::check_dist() {
 
 	int n = 4;
@@ -261,6 +230,7 @@ void ReadTables::check_dist() {
 	}
 }
 
+//Completa la matrice dei treni (se incompleta) aggiungendo un valore compatibile con la velocità e i tempi del treno 
 void ReadTables::filler() {
 
 	std::string type_o = "0";
@@ -271,13 +241,15 @@ void ReadTables::filler() {
 
 	vec2[0].push_back(km_o);
 
-
-	for (int i = 0; i < vec.size(); i++)
+	//Aggiunge uno zero ad ogni matrice TimeTable che verrà successivamente sostituito con un'orario calcolato correttamente
+	for (int i = 0; i < vec.size(); i++)                      
 		for (int j = 3; j < vec[i].size(); j++)
 			if (vec[i].size() - 3 < vec2.size())
 				vec[i].push_back(0);
 
 }
+
+//Elimina le stazioni che non rispettano il vincolo dei 20km di distanza
 void ReadTables::eraseStations() {
 
 	for (int i = 0; i < vec.size(); i++)
@@ -287,6 +259,7 @@ void ReadTables::eraseStations() {
 
 }
 
+//Funzione che riassume tutte le operazioni di lettura e acquisizione delle tabelle
 void ReadTables::read_inputs() {
 
 	read_timetable();
@@ -296,8 +269,6 @@ void ReadTables::read_inputs() {
 	strin_conc();
 
 	filler();
-
-	//check_trainstime();
 
 	check_dist();
 

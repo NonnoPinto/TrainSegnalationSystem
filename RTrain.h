@@ -23,8 +23,7 @@ public:
 	//override della funzione principale che, ad ogni ciclo,
 	//aggiorna la posizione del treno in base allo status e alla v di crociera
 	double update_pos() override;
-	
-	//override funzioni "get"
+
 	double get_pos() const override { return pos; };
 
 	int get_status() const override { return status; };
@@ -36,8 +35,10 @@ public:
 	int get_speed() const override { return vCrociera; };
 
 	int get_delay() const override { return delay; };
-	
-	//override segnalazione dell'eventuale fermata
+
+	//funzione booleana
+	//true se il treno si fermer‡ alla prossima stazione
+	//false altrimenti
 	bool stop_next_station() override { return true; };
 
 	//restituisce il successivo tempo di arrivo in base al senso di marcia
@@ -47,13 +48,10 @@ public:
 	int get_next_station() const override;
 
 protected:
-	//variabili membro protette trattabili solo attraverso le rispettive funzioni get e set
-	//le funzioni membro protette invece servono a far accedere alla modifica delle variabili solo le eventuali classi derivate
-
-	//velocit√† di crociera
+	//velocit‡ di crociera
 	int vCrociera = 0;
 
-	//funzione che aggiorna la velocit√† di crociera del treno
+	//funzione che aggiorna la velocit‡ di crociera del treno
 	void set_speed(const int v) { vCrociera = v; };
 
 	//posizione attuale del treno lungo la linea ferroviaria
@@ -68,24 +66,18 @@ protected:
 	//varibiale di controllo sullo stato del treno
 	//0 == alla stazione di partenza, 1 == in marcia,
 	//2 == fermo (parcheggio o fermata), 3 == arrivato a destinazione
-	//4 == nei pressi della stazione
 	int status = 0;
 
 	//funziona per la modifica dello stato del treno
 	void set_status(const int s) { status = s; };
 
 	//vettore con gli orari di arrivo previsti in ogni stazione
-	//l'orario √® espresso in minuti dopo la partenza
+	//l'orario Ë espresso in minuti dopo la partenza
 	std::vector<int> time;
 
 	//binario su cui il treno sta correndo
 	int myRail = 0;
-	
-	//imposta il vinario di percorrenza
-	// -1 = stazione di parcheggio
-	// 0 == tra le stazioni
-	// poi, a seconda delle stazioni, quattro binari indicano la fermata
-	// e altri due, solo nelle stazioni locali, indicano i binari per il passaggio senza fermata
+
 	void set_rail(int x) override { myRail = x; };
 };
 #endif

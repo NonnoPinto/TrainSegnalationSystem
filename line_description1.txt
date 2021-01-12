@@ -1,0 +1,15 @@
+Valhalla
+Liberty City 0 20
+Mordor 1 30
+Hogwarts 1 45
+LEGO city 0 80
+Titano 0 100
+Atlantide 1 115
+Gerusalemme 0 130
+Gotham City 1 145
+Topolinia 0 180
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/timetables.txt
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/line_description.txt
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

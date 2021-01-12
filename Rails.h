@@ -12,8 +12,12 @@
 class Rails : public RTrain, public AVTrain, public AVSTrain {
 
 public:
-	Rails() { throw std::invalid_argument("I need trains!"); };
+	//Costruttore di default
+	Rails() {};
 
+	//costruttore
+	//importa la descrizione della linea
+	//e salva i dati utili
 	Rails(std::vector<std::shared_ptr<Train>>& v) {
 		all_trains_.resize(v.size());
 		for (int i = 0; i < v.size(); i++) {
@@ -21,8 +25,8 @@ public:
 		}
 	};
 
-	//controlla la distanza tra due treni (T2 Ã¨ piÃ¹ avanti di T1)
-	//e se la distanza Ã¨ < DIST_MAX, rallenta quello accodato
+	//controlla la distanza tra due treni (T2 è più avanti di T1)
+	//e se la distanza è < DIST_MAX, rallenta quello accodato
 	void distance(std::shared_ptr<Train> T1, std::shared_ptr<Train> T2);
 
 	//tiene una lista dei treni in moto 
@@ -31,6 +35,7 @@ public:
 	//elimina i treni dopo che sono arrivati al capolinea
 	void arrived(Train& T);
 
+	//funzione bolleana che controlla i treni arrivati a destinazione
 	bool runningIsFree();
 
 	//STL sort
@@ -40,11 +45,12 @@ public:
 	//mette in ordine i treni non fermi in base alla loro posizione lungo la ferrovia
 	void onRailsSort();
 
+	//ordina le funzioni utili per la distnaza di sicurezza tra due treni
 	void dont_crash();
 
 	//private:
-		//sono definiti private due vettori della sola classe Train
-		//treni non fermi
+	//sono definiti private due vettori della sola classe Train
+	//treni non fermi
 	std::vector<std::shared_ptr<Train>> onRails_;
 
 	//tutti i treni

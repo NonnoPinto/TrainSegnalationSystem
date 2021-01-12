@@ -1,17 +1,18 @@
 /* author: Andrei Ovidiu Danciu - 1224263
- * Header della classe "Station"*/
+ * Header della classe madre "Station"
+ * Presenta diverse funzioni virtuali pure, sviluppate nelle classi figlie con overload
+ */
 
 #ifndef STATION_H
 #define STATION_H
 
-#include "TrainStation.h"
 #include "Train.h"
 
 #include <iostream>
 #include <vector>
 #include <queue>
 
-class Station : public TrainStation
+class Station
 {
 public:
 	//***COSTRUTTORE
@@ -21,7 +22,7 @@ public:
 	Station(const Station&) = delete;
 	Station& operator=(const Station&) = delete;
 
-	//FUNZIONI AUSILIARIE
+	//***FUNZIONI AUSILIARIE
 	bool isRailFree(int p);											//Controlla se un dato binario è libero
 
 	bool isRailSaved(int p);										//Controlla se un dato binario è prenotato
@@ -33,6 +34,9 @@ public:
 	std::string printTrainType(std::shared_ptr<Train> t);			//Restituisce una stringa col tipo di treno
 
 	void set_rails(int n);											//Inizializza i binari
+
+	void printRailStatus();											//Funzione ausiliaria per stampare 
+																	//se i binari di una stazione sono occupati o meno (utilizzata in fase di test)
 
 
 	//***FUNZIONI VIRTUALI IMPLEMENTATE DALLE CLASSI FIGLIE
@@ -55,11 +59,17 @@ public:
 	//e lo fa accelerare alla sua massima velocità
 	virtual void leaving(std::shared_ptr<Train> t) = 0;
 
+	//Imposta le caratteristiche di un treno considerato come arrivato a destinazione
+	//cambia la velocità a 0 e lo status a 3 (treno arrivato a destinazione)
+	virtual void arrived(std::shared_ptr<Train> t) = 0;
+
 
 	//***COSTANTI (Pubbliche perchè non si possono modificare
 	const int distance;		//Distanza (km) della stazione dall'origine
 
 	const std::string name;	//Nome della stazione
+
+
 protected:
 	//***STRUTTURE IMPLEMENTATE
 	//Struttura per gestire i binari
